@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "건국대학교",
+    "name_en": "Konkuk University"
+  },
+  {
+    "id": 2,
+    "name": "고려대학교",
+    "name_en": "Korea University"
+  },
+  {
+    "id": 3,
+    "name": "국민대학교",
+    "name_en": "Kookmin University"
+  },
+  {
+    "id": 4,
+    "name": "서울과학기술대학교",
+    "name_en": "Seoul National University of Science and Technology"
+  },
+  {
+    "id": 5,
+    "name": "서울시립대학교",
+    "name_en": "University of Seoul"
+  },
+  {
+    "id": 6,
+    "name": "홍익대학교",
+    "name_en": "Hongik University"
+  }
+]
