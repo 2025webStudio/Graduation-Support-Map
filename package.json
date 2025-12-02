@@ -1,0 +1,27 @@
+{
+  "name": "graduation-support-map",
+  "version": "1.0.0",
+  "description": "웹SW 텀 프로젝트",
+  "homepage": "https://github.com/2025webStudio/Graduation-Support-Map#readme",
+  "bugs": {
+    "url": "https://github.com/2025webStudio/Graduation-Support-Map/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/2025webStudio/Graduation-Support-Map.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
