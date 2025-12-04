@@ -2,13 +2,13 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // 페이지들 불러오기
-import Home from './pages/Home';
-import Calendar from './pages/Calendar';
-import SchoolDetail from './pages/SchoolDetail';
+import Home from './pages/Home.jsx';
+import Calendar from './pages/Calendar.jsx';
+import SchoolDetail from './pages/SchoolDetail.jsx';
 
 // 공통 컴포넌트
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
+import Navbar from './components/Navbar.jsx';
+import Footer from './components/Footer.jsx';
 
 function App() {
   return (
