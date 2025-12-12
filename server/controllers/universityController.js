@@ -43,8 +43,53 @@ const getExhibitionsByUniversity = async (req, res) => {
   }
 };
 
+// 특정 대학교에 대한 댓글 목록 조회
+const getMessagesByUniversity = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await db.query(
+      'SELECT id, nickname, content, created_at FROM messages WHERE school_id = ? ORDER BY created_at DESC',
+      [id]
+    );
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching messages:', error);
+    res.status(500).json({ error: 'Failed to fetch messages' });
+  }
+};
+
+// 특정 대학교에 댓글 추가 (nickname은 생략 가능 — DB 기본값 '익명' 사용 또는 서버에서 지정)
+const postMessage = async (req, res) => {
+  try {
+    const { id } = req.params; // school id
+    const { content, nickname } = req.body;
+
+    if (!content || !content.toString().trim()) {
+      return res.status(400).json({ error: 'Content is required' });
+    }
+
+    const nick = nickname && nickname.toString().trim() ? nickname : '익명';
+
+    const [result] = await db.query(
+      'INSERT INTO messages (nickname, school_id, content) VALUES (?, ?, ?)',
+      [nick, id, content]
+    );
+
+    // Fetch the newly inserted message to return full data (including created_at)
+    const insertId = result.insertId;
+    const [rows] = await db.query('SELECT id, nickname, content, created_at FROM messages WHERE id = ?', [insertId]);
+
+    res.status(201).json(rows[0]);
+  } catch (error) {
+    console.error('Error posting message:', error);
+    res.status(500).json({ error: 'Failed to post message' });
+  }
+};
+
 module.exports = {
   getAllUniversities,
   getUniversityById,
-  getExhibitionsByUniversity
+  getExhibitionsByUniversity,
+  getMessagesByUniversity,
+  postMessage
 };
