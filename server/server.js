@@ -6,7 +6,25 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // Middleware
-app.use(cors());
+// Configure CORS: if FRONTEND_URL is set, restrict to that origin(s), else allow all.
+const FRONTEND_URL = process.env.FRONTEND_URL;
+if (FRONTEND_URL) {
+  const allowedOrigins = FRONTEND_URL.split(',').map((s) => s.trim());
+  app.use(
+    cors({
+      origin: (origin, callback) => {
+        // Allow non-browser requests like curl/postman (no origin)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) !== -1) return callback(null, true);
+        return callback(new Error('Not allowed by CORS'), false);
+      }
+    })
+  );
+  console.log('CORS restricted to:', allowedOrigins);
+} else {
+  app.use(cors());
+  console.log('CORS: allowing all origins (FRONTEND_URL not set)');
+}
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
