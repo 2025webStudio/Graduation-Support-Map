@@ -22,8 +22,9 @@ const SchoolDetail = () => {
   const [commentInput, setCommentInput] = useState('');
   const [posting, setPosting] = useState(false);
 
-  // Base API URL from Vite env. If not set, default to empty string (relative paths).
-  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/g, '');
+  // Base API URL from environment. For Create React App use `REACT_APP_API_URL`.
+  // If empty, the app will use relative `/api/...` paths (same-origin).
+  const API_BASE = (process.env.REACT_APP_API_URL || '').replace(/\/+$/g, '');
   const apiUrl = (path) => {
     if (!path) return API_BASE;
     if (!API_BASE) return path;
