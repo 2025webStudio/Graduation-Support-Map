@@ -1,135 +1,116 @@
 import schools from '../data/schools.json';
 import districtCenters from '../data/seoulDistrictCenters.json';
 
-// 렌더링 확인
-console.log('Main.jsx loaded');
-
-function Main() {
-    const root = document.createElement('main');
-    root.className = 'main';
-
-    //CSS
-    const style = document.createElement('style');
-    style.textContent = `
-    .main {
-      display: flex;
-      height: 100vh;
-      font-family: sans-serif;
-    }
-
-    .left {
-      flex: 1;
-      padding: 32px;
-    }
-
-    .right {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .seoul-map {
-      position: relative;
-      width: 100%;
-      max-width: 700px;
-    }
-
-    .map {
-      width: 100%;
-      display: block;
-    }
-
-    .marker {
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      transform: translate(-50%, -50%);
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-
-    .marker:hover {
-      transform: translate(-50%, -50%) scale(1.25);
-      z-index: 10;
-    }
-  `;
-    document.head.appendChild(style);
-
-    //left
-    const left = document.createElement('section');
-    left.className = 'left';
-    left.textContent = '학교 카드 영역 (팀 논의 후 연결)';
-
-    //right
-    const right = document.createElement('section');
-    right.className = 'right';
-
-    const map = document.createElement('div');
-    map.className = 'seoul-map';
-
-    const mapImg = document.createElement('img');
-    mapImg.src = '/images/seoul-map.png';
-    mapImg.className = 'map';
-    mapImg.alt = '서울 지도';
-    map.appendChild(mapImg);
-
-//같은 구 학교 계산
+export default function Main() {
+    // 같은 구 학교 수 계산
     const districtCount = {};
     schools.forEach((school) => {
         districtCount[school.district] =
             (districtCount[school.district] || 0) + 1;
     });
 
-//같은 구 index 추적
+    // 같은 구 index 추적
     const districtIndex = {};
 
-//마커 생성
-    schools.forEach((school) => {
-        const center = districtCenters[school.district];
-        if (!center) return;
+    return (
+        <>
+            {/* 기존에 head에 넣던 CSS */}
+            <style>
+                {`
+          .main {
+            display: flex;
+            height: 100vh;
+            font-family: sans-serif;
+          }
 
-        districtIndex[school.district] =
-            (districtIndex[school.district] || 0);
+          .left {
+            flex: 1;
+            padding: 32px;
+          }
 
-        const index = districtIndex[school.district];
-        districtIndex[school.district] += 1;
+          .right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
 
-        const marker = document.createElement('img');
-        marker.src = '/images/map-point.png';
-        marker.className = 'marker';
-        marker.alt = school.name;
+          .seoul-map {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+          }
 
-        marker.style.left = `${center.x_ratio * 100}%`;
-        marker.style.top = `${center.y_ratio * 100}%`;
+          .map {
+            width: 100%;
+            display: block;
+          }
 
-        // 같은 구에 학교가 2개일 때만 좌우 분리
-        if (districtCount[school.district] === 2) {
-            const offset = index === 0 ? -12 : 12; // px
-            marker.style.transform = `
-        translate(-50%, -50%)
-        translate(${offset}px, 0)
-      `;
-        }
+          .marker {
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            transition: transform 0.2s;
+          }
 
-        marker.onmouseenter = () => {
-            marker.src = '/images/map-point-toggle.png';
-        };
+          .marker:hover {
+            transform: translate(-50%, -50%) scale(1.25);
+            z-index: 10;
+          }
+        `}
+            </style>
 
-        marker.onmouseleave = () => {
-            marker.src = '/images/map-point.png';
-        };
+            <main className="main">
+                {/* left */}
+                <section className="left">
+                    학교 카드 영역 (팀 논의 후 연결)
+                </section>
 
-        map.appendChild(marker);
-    });
+                {/* right */}
+                <section className="right">
+                    <div className="seoul-map">
+                        <img
+                            src="/images/seoul-map.png"
+                            className="map"
+                            alt="서울 지도"
+                        />
 
-    right.appendChild(map);
+                        {schools.map((school) => {
+                            const center = districtCenters[school.district];
+                            if (!center) return null;
 
-//화면 붙이기
-    root.appendChild(left);
-    root.appendChild(right);
+                            districtIndex[school.district] ??= 0;
+                            const index = districtIndex[school.district]++;
+                            const offset =
+                                districtCount[school.district] === 2
+                                    ? index === 0 ? -12 : 12
+                                    : 0;
 
-    return root;
+                            return (
+                                <img
+                                    key={school.id}
+                                    src="/images/map-point.png"
+                                    className="marker"
+                                    alt={school.name}
+                                    style={{
+                                        left: `${center.x_ratio * 100}%`,
+                                        top: `${center.y_ratio * 100}%`,
+                                        transform: `translate(-50%, -50%) translate(${offset}px, 0)`
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.src = '/images/map-point-toggle.png';
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.src = '/images/map-point.png';
+                                    }}
+                                />
+                            );
+                        })}
+                    </div>
+                </section>
+            </main>
+        </>
+    );
 }
-
-export default Main;
