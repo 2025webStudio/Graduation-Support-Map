@@ -1,6 +1,13 @@
-import React from 'react';
+import Main from "./Main.jsx";
+document.addEventListener("DOMContentLoaded",() =>{
+    const app = document.createElement('div');
 
-function Home() {
-}
+    app.id = app;
 
-export default Home;
+    document.body.appendChild(app);
+    app.appendChild(Main());
+});
+
+export default function Home(){
+    return null;
+};
