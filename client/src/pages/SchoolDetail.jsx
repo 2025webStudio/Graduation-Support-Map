@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/SchoolDetail.css';
 
-// 이미지 임시 경로 (실제 파일이 있다면 import 사용)
+// 이미지 임시 경로
 const PLACEHOLDER_IMG = 'https://placehold.co/600x400/png';
 const CALENDAR_ICON = 'https://placehold.co/20x20/png?text=C';
 const LOCATION_ICON = 'https://placehold.co/20x20/png?text=L';
@@ -22,21 +22,29 @@ const SchoolDetail = () => {
   const [commentInput, setCommentInput] = useState('');
   const [posting, setPosting] = useState(false);
 
+  // Base API URL from Vite env. If not set, default to empty string (relative paths).
+  const API_BASE = (import.meta.env.VITE_API_URL || '').replace(/\/+$/g, '');
+  const apiUrl = (path) => {
+    if (!path) return API_BASE;
+    if (!API_BASE) return path;
+    return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
+  };
+
   useEffect(() => {
     // Fetch school info
-    fetch(`/api/universities/${schoolId}`)
+    fetch(apiUrl(`/api/universities/${schoolId}`))
       .then((res) => res.json())
       .then((data) => setSchool(data))
       .catch((err) => console.error(err));
 
     // Fetch exhibitions
-    fetch(`/api/universities/${schoolId}/exhibitions`)
+    fetch(apiUrl(`/api/universities/${schoolId}/exhibitions`))
       .then((res) => res.json())
       .then((data) => setExhibitions(data))
       .catch((err) => console.error(err));
 
     // Fetch comments
-    fetch(`/api/universities/${schoolId}/messages`)
+    fetch(apiUrl(`/api/universities/${schoolId}/messages`))
       .then((res) => res.json())
       .then((data) => setComments(data))
       .catch((err) => console.error(err));
@@ -55,7 +63,7 @@ const SchoolDetail = () => {
     if (!commentInput.trim()) return;
     setPosting(true);
     try {
-      const res = await fetch(`/api/universities/${schoolId}/messages`, {
+      const res = await fetch(apiUrl(`/api/universities/${schoolId}/messages`), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ content: commentInput })
