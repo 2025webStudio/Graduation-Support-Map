@@ -6,7 +6,6 @@ import '../styles/SchoolDetail.css';
 const PLACEHOLDER_IMG = 'https://placehold.co/600x400/png';
 const CALENDAR_ICON = 'https://placehold.co/20x20/png?text=C';
 const LOCATION_ICON = 'https://placehold.co/20x20/png?text=L';
-const ARROW_ICON = 'https://placehold.co/15x10/png?text=%3E';
 
 const SchoolDetail = () => {
   const { id } = useParams();
@@ -17,7 +16,7 @@ const SchoolDetail = () => {
   const [comments, setComments] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 3;
+  const itemsPerPage = 1;
 
   const [commentInput, setCommentInput] = useState('');
   const [posting, setPosting] = useState(false);
@@ -113,7 +112,6 @@ const SchoolDetail = () => {
               {item.website_url ? (
                 <a href={item.website_url} className="insta-btn" target="_blank" rel="noopener noreferrer">
                   INSTAGRAM
-                  <img src={ARROW_ICON} alt="arrow" className="arrow-icon" />
                 </a>
               ) : null}
             </div>
@@ -127,23 +125,17 @@ const SchoolDetail = () => {
           onClick={() => handlePageChange(Math.max(currentPage - 1, 1))}
           disabled={currentPage === 1}
         >
-          &lt;
+          &lt; Prev
         </button>
-        {Array.from({ length: totalPages }, (_, i) => (
-          <button
-            key={i + 1}
-            onClick={() => handlePageChange(i + 1)}
-            className={`page-btn ${currentPage === i + 1 ? 'active' : ''}`}
-          >
-            {i + 1}
-          </button>
-        ))}
+
+        <span className="page-indicator">{currentPage} / {totalPages}</span>
+
         <button
           className="page-btn"
           onClick={() => handlePageChange(Math.min(currentPage + 1, totalPages))}
           disabled={currentPage === totalPages}
         >
-          &gt;
+          Next &gt;
         </button>
       </div>
 
