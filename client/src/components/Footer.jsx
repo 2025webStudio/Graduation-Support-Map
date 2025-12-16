@@ -17,9 +17,9 @@ export default function Footer() {
                         <li>국민대학교</li>
                     </ul>
                     <ul style={styles.ul}>
+                        <li>서울과학기술대학교</li>
+                        <li>서울시립대학교</li>
                         <li>홍익대학교</li>
-                        <li>동국대학교</li>
-                        <li>이화여자대학교</li>
                     </ul>
                 </div>
             </div>
