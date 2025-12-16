@@ -19,6 +19,8 @@
     font-size: 28px;
     font-weight: 600;
     letter-spacing: -0.5px;
+    text-decoration: none;
+    color: black;
 }
 .navbar-nav {
     display: flex;
@@ -82,10 +84,15 @@
     margin: 0;
 }
 
-.footer-universities li {
-    font-size: 20px;
+.footer-universities li a {
+    text-decoration: none;
     color: #cfcfcf;
-    margin-bottom: 10px;
+    transition: color 0.2s ease;
+}
+
+.footer-universities li a:hover {
+    color: #ffffff;
+    text-decoration: underline;
 }
 
 .footer-bottom {

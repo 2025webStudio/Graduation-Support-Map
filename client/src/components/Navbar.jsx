@@ -6,9 +6,9 @@ export default function Navbar() {
         <header className="navbar-header">
             <div className="navbar-inner">
                 {/* Logo */}
-                <div className="navbar-logo">
+                <NavLink to="/" className="navbar-logo">
                     Seoul Graduation Exhibition
-                </div>
+                </NavLink>
 
                 {/* Navigation */}
                 <nav className="navbar-nav">
