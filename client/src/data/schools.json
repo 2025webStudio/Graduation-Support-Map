@@ -34,5 +34,11 @@
     "name": "홍익대학교",
     "name_en": "Hongik University",
     "district": "마포구"
+  },
+  {
+    "id": 7,
+    "name": "한국항공대학교",
+    "name_en" : "Korea Aerospace University",
+    "district": "고양시"
   }
 ]

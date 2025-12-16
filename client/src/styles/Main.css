@@ -4,8 +4,10 @@
 
 .main {
     display: flex;
-    height: 100vh;
+    height: 100%;
     font-family: sans-serif;
+    min-height: calc(100vh - 72px); /* header 높이 고려 */
+    padding-top: 80px;
 }
 
 .left {
@@ -13,6 +15,8 @@
     padding: 80px 60px;
     display: flex;
     align-items: center;
+    padding-left: 100px;
+    padding-right: 40px;
 }
 
 /* 기본 상태 */
@@ -93,6 +97,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding-right: 100px;
 }
 
 /* =======================

@@ -15,7 +15,6 @@ export default function Main() {
 
     /* =========================
        학교별 전시 목록 불러오기
-       (이미지 X, 데이터만)
     ========================= */
     useEffect(() => {
         const fetchExhibitions = async () => {
@@ -23,7 +22,9 @@ export default function Main() {
 
             for (const school of schoolsData) {
                 try {
-                    const res = await fetch(`/api/universities/${school.id}/exhibitions`);
+                    const res = await fetch(
+                        `/api/universities/${school.id}/exhibitions`
+                    );
                     const data = await res.json();
                     result[school.id] = Array.isArray(data) ? data : [];
                 } catch (e) {
@@ -54,17 +55,18 @@ export default function Main() {
             {/* 좌측 영역 */}
             <section className="left">
                 {!hoveredSchool ? (
-                    /* 기본 상태 */
                     <div className="school-card-empty">
-                        <p className="empty-title">Seoul Graduation Exhibition</p>
+                        <p className="empty-title">
+                            Seoul Graduation Exhibition
+                        </p>
                         <p className="empty-sub">
                             지도 위 학교 마커에 마우스를 올려보세요
                         </p>
                     </div>
                 ) : (
-                    /* Hover 상태 */
                     (() => {
-                        const exhibitions = exhibitionsBySchool[hoveredSchool.id] || [];
+                        const exhibitions =
+                            exhibitionsBySchool[hoveredSchool.id] || [];
                         const representativeExhibition = exhibitions[0];
 
                         return (
@@ -73,7 +75,7 @@ export default function Main() {
                                     <img
                                         src={
                                             representativeExhibition?.poster_url ||
-                                            "https://placehold.co/600x400/png"
+                                            PLACEHOLDER_IMG
                                         }
                                         alt={representativeExhibition?.title}
                                     />
@@ -123,9 +125,22 @@ export default function Main() {
                                     : 12
                                 : 0;
 
-                        // 학교 → 전시 배열 → 대표 전시 1개
-                        const exhibitions = exhibitionsBySchool[school.id] || [];
+                        const exhibitions =
+                            exhibitionsBySchool[school.id] || [];
                         const representativeExhibition = exhibitions[0];
+
+                        /* =========================
+                           항공대(id=7) 마커 분기
+                        ========================= */
+                        const isKAU = school.id === 7;
+
+                        const defaultMarkerSrc = isKAU
+                            ? "/images/kau-map-point.png"
+                            : "/images/map-point.png";
+
+                        const hoverMarkerSrc = isKAU
+                            ? "/images/kau-map-point.png"
+                            : "/images/map-point-toggle.png";
 
                         return (
                             <div
@@ -141,17 +156,18 @@ export default function Main() {
                             >
                                 {/* 마커 */}
                                 <img
-                                    src="/images/map-point.png"
+                                    src={defaultMarkerSrc}
                                     alt={school.name}
                                     className="marker"
-                                    onClick={() => navigate(`/school/${school.id}`)}
-                                    onMouseEnter={(e) =>
-                                        (e.currentTarget.src =
-                                            "/images/map-point-toggle.png")
+                                    onClick={() =>
+                                        navigate(`/school/${school.id}`)
                                     }
-                                    onMouseLeave={(e) =>
-                                        (e.currentTarget.src = "/images/map-point.png")
-                                    }
+                                    onMouseEnter={(e) => {
+                                        e.currentTarget.src = hoverMarkerSrc;
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.currentTarget.src = defaultMarkerSrc;
+                                    }}
                                 />
 
                                 {/* Hover 카드 */}
