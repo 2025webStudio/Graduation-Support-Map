@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/SchoolDetail.css';
 
-// 이 파일은 학교 상세 페이지를 렌더링합니다.
+// 학교 상세 페이지를 렌더링
 // 주요 기능:
 // - 라우트 파라미터(`id`)로 특정 학교 선택
 // - 해당 학교의 정보, 전시회 목록, 댓글을 API로부터 조회
@@ -11,7 +11,7 @@ import '../styles/SchoolDetail.css';
 
 // 이미지 임시 경로 (실제 이미지가 없을 때 대체로 사용)
 const PLACEHOLDER_IMG = 'https://placehold.co/600x400/png';
-// 아이콘 임시 URL (개발 중 샘플용)
+// 아이콘 임시 URL (샘플용)
 const CALENDAR_ICON = 'https://placehold.co/20x20/png?text=C';
 const LOCATION_ICON = 'https://placehold.co/20x20/png?text=L';
 
@@ -19,8 +19,8 @@ const SchoolDetail = () => {
   const { id } = useParams();
   const schoolId = id || '1';
 
-  // `useParams`로 전달된 id 값을 사용합니다.
-  // 라우트에 id가 없으면 안전하게 기본값 '1'을 사용합니다.
+  // `useParams`로 전달된 id 값을 사용
+  // 라우트에 id가 없으면 안전하게 기본값 '1'을 사용
 
   const [school, setSchool] = useState(null);
   const [exhibitions, setExhibitions] = useState([]);
@@ -32,15 +32,15 @@ const SchoolDetail = () => {
   const [commentInput, setCommentInput] = useState('');
   const [posting, setPosting] = useState(false);
 
-  // 상태 설명:
+  // useState:
   // - school: 현재 선택된 학교 객체 (API 응답)
   // - exhibitions: 해당 학교의 전시회 배열
   // - comments: 해당 학교의 응원 메시지 배열
   // - commentInput: 댓글 입력창 상태
   // - posting: 댓글 전송 중 플래그
 
-  // Base API URL from environment. For Create React App use `REACT_APP_API_URL`.
-  // If empty, the app will use relative `/api/...` paths (same-origin).
+  // 프론트 배포 환경 함수 `REACT_APP_API_URL` 사용
+  // 공백이라면 `/api/...` paths (same-origin)
   const API_BASE = (process.env.REACT_APP_API_URL || '').replace(/\/+$/g, '');
   const apiUrl = (path) => {
     if (!path) return API_BASE;
@@ -48,7 +48,36 @@ const SchoolDetail = () => {
     return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
   };
 
-  // API URL 헬퍼 함수 설명:
+  // 날짜 포맷 헬퍼: 가능한 경우 ISO/Date 문자열을 YYYY-MM-DD로 포맷
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    const d = new Date(dateStr);
+    if (Number.isNaN(d.getTime())) {
+      // Date 파싱 실패 시 원본 문자열을 그대로 반환
+      return dateStr;
+    }
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, '0');
+    const day = String(d.getDate()).padStart(2, '0');
+    return `${y}-${m}-${day}`;
+  };
+
+  // 설명 텍스트 줄바꿈 처리: 리터럴 "\\n" 또는 실제 줄바꿈 모두 처리하여
+  // React에서 <br/>로 렌더링되게 변환
+  const renderWithLineBreaks = (text) => {
+    if (!text && text !== '') return null;
+    // 서버에서 이스케이프된 "\\n"이 올 수 있으므로 실제 개행으로 정규화
+    const normalized = String(text).replace(/\\n/g, '\n');
+    const lines = normalized.split('\n');
+    return lines.map((line, i) => (
+      <React.Fragment key={i}>
+        {line}
+        {i < lines.length - 1 ? <br /> : null}
+      </React.Fragment>
+    ));
+  };
+
+  // API URL 헬퍼 함수:
   // - 환경변수(REACT_APP_API_URL)가 설정되어 있으면 그 값을 베이스로 사용
   // - 설정되어 있지 않으면 전달된 경로를 그대로 사용 (동일 오리진)
   // - 이 방식으로 개발/배포 환경에서 동일한 코드로 호출 가능
@@ -73,7 +102,7 @@ const SchoolDetail = () => {
       .catch((err) => console.error(err));
   }, [schoolId]);
 
-  // useEffect 요약:
+  // useEffect:
   // - 컴포넌트 마운트 또는 `schoolId` 변경 시 세 가지 API를 호출
   //   (학교 정보, 전시회 목록, 댓글 목록)
   // - 네트워크 오류는 콘솔에 출력 (추후 사용자 알림 개선 가능)
@@ -114,7 +143,7 @@ const SchoolDetail = () => {
     }
   };
 
-  // 댓글 등록 로직 설명:
+  // 댓글 등록 로직:
   // - 입력값이 공백일 경우 동작하지 않음
   // - 서버로 POST 요청을 보내고, 성공하면 응답으로 돌아온 새 댓글을
   //   comments 배열 맨 앞에 추가하여 즉시 UI에 반영
@@ -138,7 +167,7 @@ const SchoolDetail = () => {
 
               <div className="info-row">
                 <img src={CALENDAR_ICON} alt="Calendar" className="icon" />
-                <span>{item.start_date ? `${item.start_date} ~ ${item.end_date || ''}` : ''}</span>
+                <span>{item.start_date ? `${formatDate(item.start_date)}~${item.end_date ? formatDate(item.end_date) : ''}` : ''}</span>
               </div>
 
               <div className="info-row">
@@ -146,7 +175,7 @@ const SchoolDetail = () => {
                 <span>{item.venue || item.location}</span>
               </div>
 
-              <p className="description">{item.description}</p>
+              <p className="description">{renderWithLineBreaks(item.description)}</p>
 
               {item.website_url ? (
                 <a href={item.website_url} className="insta-btn" target="_blank" rel="noopener noreferrer">
