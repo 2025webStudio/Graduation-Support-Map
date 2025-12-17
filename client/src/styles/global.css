@@ -1,0 +1,104 @@
+.navbar-header {
+    width: 100%;
+    border-bottom: 1px solid #eaeaea;
+    background-color: #ffffff;
+}
+.navbar-inner {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 32px;
+    box-sizing: border-box;
+}
+
+.navbar-logo {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+    text-decoration: none;
+    color: black;
+}
+.navbar-nav {
+    display: flex;
+    gap: 48px;
+    align-items: center;
+}
+
+.nav-link {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-decoration: none;
+    color: #444;
+    padding: 8px 0;
+    border-top: 1px solid transparent;
+    border-bottom: 1px solid transparent;
+    transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.nav-link:hover {
+    color: #000;
+}
+.nav-link.active {
+    color: #000;
+    border-top: 1px solid #000;
+    border-bottom: 1px solid #000;
+}
+.footer {
+    width: 100%;
+    background-color: #1e1e1e;
+    color: #ffffff;
+    margin-top: 120px;
+}
+.footer-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 80px 32px;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.footer-title {
+    font-size: 42px;
+    font-weight: 300;
+    line-height: 1.1;
+    color: #d9d9d9;
+    display: flex;
+    flex-direction: column;
+}
+
+.footer-title span {
+    display: block;
+}
+.footer-universities {
+    display: flex;
+    gap: 80px;
+}
+
+.footer-universities ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.footer-universities li a {
+    text-decoration: none;
+    color: #cfcfcf;
+    transition: color 0.2s ease;
+}
+
+.footer-universities li a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+.footer-bottom {
+    border-top: 1px solid #333;
+    text-align: center;
+    padding: 16px 0;
+    font-size: 12px;
+    color: #999;
+}
