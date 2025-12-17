@@ -9,17 +9,11 @@ function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedExhibitions, setSelectedExhibitions] = useState([]);
 
-  // Base API URL from environment variable
-  const API_BASE = (process.env.REACT_APP_API_URL || '').replace(/\/+$/g, '');
-  const apiUrl = (path) => {
-    if (!path) return API_BASE;
-    if (!API_BASE) return path;
-    return `${API_BASE}${path.startsWith('/') ? path : `/${path}`}`;
-  };
+  const API_BASE = 'https://graduation-support-map.vercel.app';
 
   // API에서 전시회 데이터 가져오기
   useEffect(() => {
-    fetch(apiUrl('/api/exhibitions'))
+    fetch(`${API_BASE}/api/exhibitions`)
       .then(res => res.json())
       .then(data => {
         setExhibitions(data);
@@ -51,8 +45,7 @@ function CalendarPage() {
   // 날짜 클릭 핸들러
   const handleDateClick = (date) => {
     setSelectedDate(date);
-    const exhibitions = getExhibitionsByDate(date);
-    setSelectedExhibitions(exhibitions);
+    setSelectedExhibitions(getExhibitionsByDate(date));
   };
 
   // 초기 로드 시 오늘 날짜의 전시회 표시
@@ -101,8 +94,6 @@ function CalendarPage() {
             navigationLabel={({ date }) =>
               date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' })
             }
-            showNeighboringMonth={false}
-            showNavigation={true}
           />
         </div>
 
@@ -141,9 +132,9 @@ function CalendarPage() {
                       {' - '}
                       {new Date(exhibition.end_date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                     </p>
-                    {exhibition.website_url && (
+                    {exhibition.school_id && (
                       <a
-                        href={exhibition.website_url}
+                        href={`${API_BASE}/school/${exhibition.school_id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="exhibition-link"
