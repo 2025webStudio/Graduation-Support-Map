@@ -9,7 +9,8 @@ function CalendarPage() {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedExhibitions, setSelectedExhibitions] = useState([]);
 
-  const API_BASE = 'https://graduation-support-map.vercel.app';
+  const API_BASE = 'https://graduation-support-map.up.railway.app';
+  const CLIENT_BASE = 'https://graduation-support-map.vercel.app';
 
   // API에서 전시회 데이터 가져오기
   useEffect(() => {
@@ -134,7 +135,7 @@ function CalendarPage() {
                     </p>
                     {exhibition.school_id && (
                       <a
-                        href={`${API_BASE}/school/${exhibition.school_id}`}
+                        href={`${CLIENT_BASE}/school/${exhibition.school_id}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="exhibition-link"
