@@ -30,14 +30,6 @@ export default function Navbar() {
                     >
                         CALENDAR
                     </NavLink>
-
-                    <NavLink to="/signup" className="nav-link">
-                        SIGNUP
-                    </NavLink>
-
-                    <NavLink to="/login" className="nav-link">
-                        LOGIN
-                    </NavLink>
                 </nav>
             </div>
         </header>
