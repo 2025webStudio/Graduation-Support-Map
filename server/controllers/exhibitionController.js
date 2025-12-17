@@ -1,6 +1,10 @@
+// 데이터베이스 연결 모듈 불러오기
 const db = require('../config/database');
 
-// 모든 전시회 조회
+// 전체 전시회 목록 조회
+// - Method: GET
+// - Endpoint: /api/exhibitions
+// - 반환: exhibitions 테이블과 관련 대학 정보를 조인하여 반환
 const getAllExhibitions = async (req, res) => {
   try {
     const [rows] = await db.query(`
@@ -16,7 +20,10 @@ const getAllExhibitions = async (req, res) => {
   }
 };
 
-// 특정 전시회 조회
+// 특정 전시회(id 기준) 조회
+// - Method: GET
+// - Endpoint: /api/exhibitions/:id
+// - 반환: 전시회 단일 객체(관련 대학 정보 포함)
 const getExhibitionById = async (req, res) => {
   try {
     const { id } = req.params;
@@ -39,6 +46,9 @@ const getExhibitionById = async (req, res) => {
 };
 
 // 날짜 범위로 전시회 조회
+// - Method: GET
+// - Endpoint: /api/exhibitions?startDate=YYYY-MM-DD&endDate=YYYY-MM-DD
+// - 동작: 전달된 startDate/endDate에 따라 WHERE 절을 동적으로 생성
 const getExhibitionsByDateRange = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
