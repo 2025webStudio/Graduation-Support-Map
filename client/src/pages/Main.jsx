@@ -48,15 +48,14 @@ export default function Main() {
     }, []);
 
     //호버이벤트 무한반복 차단
-    const handleMouseEnter = useCallback((school) => {
-        setHoveredSchool((prev) =>
-            prev?.id === school.id ? prev : school
-        );
-    }, []);
+    const handleMouseEnter = (school) => {
+        setHoveredSchool(school);
+    };
 
-    const handleMouseLeave = useCallback(() => {
+    const handleMouseLeave = () => {
         setHoveredSchool(null);
-    }, []);
+    };
+
 
     //구 단위로 학교 개수를 세서 마커 겹침 여부 판단
     const districtCount = {};
@@ -160,8 +159,7 @@ export default function Main() {
                                     top: `${center.y_ratio * 100}%`,
                                     transform: `translate(-50%, -50%) translate(${offset}px, 0)`
                                 }}
-                                onMouseEnter={() => handleMouseEnter(school)}
-                                onMouseLeave={handleMouseLeave}
+
                             >
                                 {/* 마커 */}
                                 <img
@@ -171,12 +169,8 @@ export default function Main() {
                                     onClick={() =>
                                         navigate(`/school/${school.id}`)
                                     }
-                                    onMouseEnter={(e) => {
-                                        e.currentTarget.src = hoverMarkerSrc;
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.currentTarget.src = defaultMarkerSrc;
-                                    }}
+                                    onMouseEnter={() => handleMouseEnter(school)}
+                                    onMouseLeave={handleMouseLeave}
                                 />
 
                                 {/* Hover 카드 */}
