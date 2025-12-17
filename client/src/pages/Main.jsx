@@ -4,6 +4,7 @@ import districtCenters from "../data/seoulDistrictCenters.json";
 import schoolsData from "../data/schools.json";
 import "../styles/Main.css";
 
+//전시 포스터가 없을 경우 : 기본 이미지 송출
 const PLACEHOLDER_IMG = "https://placehold.co/300x200/png";
 
 const API_BASE =
@@ -11,47 +12,48 @@ const API_BASE =
     "https://graduation-support-map.up.railway.app";
 
 export default function Main() {
+    //마커 클릭시 학교 상세페이지로 이동
     const navigate = useNavigate();
+    //현재 마우스가 올라가 있는 학교 정보를 저장
     const [hoveredSchool, setHoveredSchool] = useState(null);
 
-    // 학교별 전시 목록
+    // 학교별 전시 목록(id를 기준으로 전시 목록 저장)
     const [exhibitionsBySchool, setExhibitionsBySchool] = useState({});
 
-    /* =========================
-       학교별 전시 목록 불러오기
-    ========================= */
+    //화면 진입시 모든 학교의 전시정보를 미리 불러옴
     useEffect(() => {
         const fetchExhibitions = async () => {
             const result = {};
 
+            //각 학교 목록을 순회하며 학교별 전시 API 호출
             for (const school of schoolsData) {
                 try {
                     const res = await fetch(
                         `${API_BASE}/api/universities/${school.id}/exhibitions`
                     );
                     const data = await res.json();
+                    //로딩이 성공할때만 배열에 저장
                     result[school.id] = Array.isArray(data) ? data : [];
                 } catch (e) {
                     console.error("전시 로딩 실패:", school.id, e);
                     result[school.id] = [];
                 }
             }
-
+            //모든 학교 전시 정보를 한번에 상태로 저장
             setExhibitionsBySchool(result);
         };
 
         fetchExhibitions();
     }, []);
 
-    /* =========================
-       같은 구 학교 개수 계산
-    ========================= */
+    //구 단위로 학교 개수를 세서 마커 겹침 여부 판단
     const districtCount = {};
     schoolsData.forEach((school) => {
         districtCount[school.district] =
             (districtCount[school.district] || 0) + 1;
     });
 
+    //같은 구 안에서 몇번째 학교인지 추적
     const districtIndex = {};
 
     return (
