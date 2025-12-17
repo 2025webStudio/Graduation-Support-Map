@@ -12,7 +12,6 @@
 
 .left {
     flex: 1;
-    padding: 80px 60px;
     display: flex;
     align-items: center;
     padding-left: 100px;
