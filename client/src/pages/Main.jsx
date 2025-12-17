@@ -70,32 +70,26 @@ export default function Main() {
 
     return (
         <main className="main">
-            {/* 좌측 영역 */}
-            <section className="left">
+            {/* 좌측 정보 패널 (레이아웃 분리) */}
+            <section className="left-fixed">
                 {!hoveredSchool ? (
                     <div className="school-card-empty">
-                        <p className="empty-title">
-                            Seoul Graduation Exhibition
-                        </p>
+                        <p className="empty-title">Seoul Graduation Exhibition</p>
                         <p className="empty-sub">
                             지도 위 학교 마커에 마우스를 올려보세요
                         </p>
                     </div>
                 ) : (
                     (() => {
-                        const exhibitions =
-                            exhibitionsBySchool[hoveredSchool.id] || [];
-                        const representativeExhibition = exhibitions[0];
+                        const exhibitions = exhibitionsBySchool[hoveredSchool.id] || [];
+                        const rep = exhibitions[0];
 
                         return (
                             <div className="school-card">
                                 <div className="school-card-image">
                                     <img
-                                        src={
-                                            representativeExhibition?.poster_url ||
-                                            PLACEHOLDER_IMG
-                                        }
-                                        alt={representativeExhibition?.title}
+                                        src={rep?.poster_url || PLACEHOLDER_IMG}
+                                        alt={rep?.title}
                                     />
                                 </div>
 

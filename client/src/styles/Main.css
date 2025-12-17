@@ -17,6 +17,27 @@
     padding-right: 40px;
 }
 
+.left-fixed {
+    position: fixed;
+    top: 72px;              /* Navbar 아래 */
+    left: 0;
+    width: 420px;
+    height: calc(100vh - 72px);
+    padding: 32px;
+    box-sizing: border-box;
+    background: #fff;
+    z-index: 10;
+    overflow-y: auto;
+}
+/* 지도 영역 */
+.right-map {
+    margin-left: 420px;     /* left-fixed 너비만큼 밀기 */
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 /* 기본 상태 */
 
 .school-card-empty {
