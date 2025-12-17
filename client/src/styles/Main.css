@@ -19,11 +19,11 @@
 }
 
 .left-fixed {
-    position: fixed;
+    position: sticky;
     top: 72px;              /* Navbar 아래 */
     left: 0;
     width: 420px;
-    height: calc(100vh - 72px);
+    height: fit-content;
     padding: 32px;
     box-sizing: border-box;
     background: #fff;
