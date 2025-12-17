@@ -8,8 +8,9 @@ import "../styles/Main.css";
 const PLACEHOLDER_IMG = "https://placehold.co/300x200/png";
 
 const API_BASE =
-    import.meta.env.VITE_API_BASE_URL ||
+    process.env.REACT_APP_API_BASE_URL ||
     "https://graduation-support-map.up.railway.app";
+
 
 export default function Main() {
     //마커 클릭시 학교 상세페이지로 이동
