@@ -6,6 +6,10 @@ import "../styles/Main.css";
 
 const PLACEHOLDER_IMG = "https://placehold.co/300x200/png";
 
+const API_BASE =
+    import.meta.env.VITE_API_BASE_URL ||
+    "https://graduation-support-map.up.railway.app";
+
 export default function Main() {
     const navigate = useNavigate();
     const [hoveredSchool, setHoveredSchool] = useState(null);
@@ -23,7 +27,7 @@ export default function Main() {
             for (const school of schoolsData) {
                 try {
                     const res = await fetch(
-                        `/api/universities/${school.id}/exhibitions`
+                        `${API_BASE}/api/universities/${school.id}/exhibitions`
                     );
                     const data = await res.json();
                     result[school.id] = Array.isArray(data) ? data : [];
